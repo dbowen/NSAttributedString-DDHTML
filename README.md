@@ -29,7 +29,7 @@ NSAttributedString+DDHTML requires a minimum iOS deployment target of iOS 4.3 be
 	
 	...
 	
-	NSAttibutedString *attributedString = [NSAttributedString attributedStringFromHTML:@"My <b>formatted</b> string." boldFont:[UIFont boldSystemFontOfSize:12.0]];
+	NSAttributedString *attributedString = [NSAttributedString attributedStringFromHTML:@"My <b>formatted</b> string." boldFont:[UIFont boldSystemFontOfSize:12.0]];
 	
 	...
 	
