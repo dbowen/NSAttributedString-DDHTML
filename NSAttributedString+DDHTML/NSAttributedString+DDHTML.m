@@ -83,7 +83,7 @@
                 NSString *attributeValue = @"";
                 
                 if (attribute->children != NULL) {
-                    attributeValue = [[NSString stringWithCString:(const char *)attribute->children->content encoding:NSUTF8StringEncoding] lowercaseString];
+                    attributeValue = [NSString stringWithCString:(const char *)attribute->children->content encoding:NSUTF8StringEncoding];
                 }
                 NSString *attributeName = [[NSString stringWithCString:(const char*)attribute->name encoding:NSUTF8StringEncoding] lowercaseString];
                 [attributeDictionary setObject:attributeValue forKey:attributeName];
@@ -133,7 +133,7 @@
             NSShadow *shadow = [[NSShadow alloc] init];
             shadow.shadowOffset = CGSizeMake(0, 0);
             shadow.shadowBlurRadius = 2.0;
-            shadow.shadowColor = [UIColor purpleColor];
+            shadow.shadowColor = [UIColor blackColor];
             
             if ([attributeDictionary objectForKey:@"offset"]) {
                 shadow.shadowOffset = CGSizeFromString([attributeDictionary objectForKey:@"offset"]);
@@ -191,7 +191,7 @@
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
             
             if ([attributeDictionary objectForKey:@"align"]) {
-                NSString *alignString = [attributeDictionary objectForKey:@"align"];
+                NSString *alignString = [[attributeDictionary objectForKey:@"align"] lowercaseString];
                 
                 if ([alignString isEqualToString:@"left"]) {
                     paragraphStyle.alignment = NSTextAlignmentLeft;
@@ -207,7 +207,7 @@
                 }
             }
             if ([attributeDictionary objectForKey:@"linebreakmode"]) {
-                NSString *lineBreakModeString = [attributeDictionary objectForKey:@"linebreakmode"];
+                NSString *lineBreakModeString = [[attributeDictionary objectForKey:@"linebreakmode"] lowercaseString];
                 
                 if ([lineBreakModeString isEqualToString:@"wordwrapping"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
