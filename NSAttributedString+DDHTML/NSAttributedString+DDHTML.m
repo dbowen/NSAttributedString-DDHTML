@@ -83,9 +83,9 @@
                 NSString *attributeValue = @"";
                 
                 if (attribute->children != NULL) {
-                    attributeValue = [NSString stringWithCString:(const char *)attribute->children->content encoding:NSUTF8StringEncoding];
+                    attributeValue = [[NSString stringWithCString:(const char *)attribute->children->content encoding:NSUTF8StringEncoding] lowercaseString];
                 }
-                NSString *attributeName = [NSString stringWithCString:(const char*)attribute->name encoding:NSUTF8StringEncoding];
+                NSString *attributeName = [[NSString stringWithCString:(const char*)attribute->name encoding:NSUTF8StringEncoding] lowercaseString];
                 [attributeDictionary setObject:attributeValue forKey:attributeName];
                 
                 attribute = attribute->next;
@@ -136,8 +136,8 @@
             if ([attributeDictionary objectForKey:@"offset"]) {
                 shadow.shadowOffset = CGSizeFromString([attributeDictionary objectForKey:@"offset"]);
             }
-            if ([attributeDictionary objectForKey:@"blurRadius"]) {
-                shadow.shadowBlurRadius = [[attributeDictionary objectForKey:@"blurRadius"] doubleValue];
+            if ([attributeDictionary objectForKey:@"blurradius"]) {
+                shadow.shadowBlurRadius = [[attributeDictionary objectForKey:@"blurradius"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"color"]) {
                 shadow.shadowColor = [self colorFromHexString:[attributeDictionary objectForKey:@"color"]];
@@ -162,8 +162,8 @@
             if ([attributeDictionary objectForKey:@"color"]) {
                 foregroundColor = [self colorFromHexString:[attributeDictionary objectForKey:@"color"]];
             }
-            if ([attributeDictionary objectForKey:@"backgroundColor"]) {
-                backgroundColor = [self colorFromHexString:[attributeDictionary objectForKey:@"backgroundColor"]];
+            if ([attributeDictionary objectForKey:@"backgroundcolor"]) {
+                backgroundColor = [self colorFromHexString:[attributeDictionary objectForKey:@"backgroundcolor"]];
             }
     
             if (fontName == nil && fontSize != nil) {
@@ -204,58 +204,58 @@
                     paragraphStyle.alignment = NSTextAlignmentJustified;
                 }
             }
-            if ([attributeDictionary objectForKey:@"lineBreakMode"]) {
-                NSString *lineBreakModeString = [attributeDictionary objectForKey:@"lineBreakMode"];
+            if ([attributeDictionary objectForKey:@"linebreakmode"]) {
+                NSString *lineBreakModeString = [attributeDictionary objectForKey:@"linebreakmode"];
                 
-                if ([lineBreakModeString isEqualToString:@"WordWrapping"]) {
+                if ([lineBreakModeString isEqualToString:@"wordwrapping"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                 }
-                else if ([lineBreakModeString isEqualToString:@"CharWrapping"]) {
+                else if ([lineBreakModeString isEqualToString:@"charwrapping"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByCharWrapping;
                 }
-                else if ([lineBreakModeString isEqualToString:@"Clipping"]) {
+                else if ([lineBreakModeString isEqualToString:@"clipping"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByClipping;
                 }
-                else if ([lineBreakModeString isEqualToString:@"TruncatingHead"]) {
+                else if ([lineBreakModeString isEqualToString:@"truncatinghead"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingHead;
                 }
-                else if ([lineBreakModeString isEqualToString:@"TruncatingTail"]) {
+                else if ([lineBreakModeString isEqualToString:@"truncatingtail"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
                 }
-                else if ([lineBreakModeString isEqualToString:@"TruncatingMiddle"]) {
+                else if ([lineBreakModeString isEqualToString:@"truncatingmiddle"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingMiddle;
                 }
             }
             
-            if ([attributeDictionary objectForKey:@"firstLineHeadIndent"]) {
-                paragraphStyle.firstLineHeadIndent = [[attributeDictionary objectForKey:@"firstLineHeadIndent"] doubleValue];
+            if ([attributeDictionary objectForKey:@"firstlineheadindent"]) {
+                paragraphStyle.firstLineHeadIndent = [[attributeDictionary objectForKey:@"firstlineheadindent"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"headIndent"]) {
-                paragraphStyle.headIndent = [[attributeDictionary objectForKey:@"headIndent"] doubleValue];
+            if ([attributeDictionary objectForKey:@"headindent"]) {
+                paragraphStyle.headIndent = [[attributeDictionary objectForKey:@"headindent"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"hyphenationFactor"]) {
-                paragraphStyle.hyphenationFactor = [[attributeDictionary objectForKey:@"hyphenationFactor"] doubleValue];
+            if ([attributeDictionary objectForKey:@"hyphenationfactor"]) {
+                paragraphStyle.hyphenationFactor = [[attributeDictionary objectForKey:@"hyphenationfactor"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"lineHeightMultiple"]) {
-                paragraphStyle.lineHeightMultiple = [[attributeDictionary objectForKey:@"lineHeightMultiple"] doubleValue];
+            if ([attributeDictionary objectForKey:@"lineheightmultiple"]) {
+                paragraphStyle.lineHeightMultiple = [[attributeDictionary objectForKey:@"lineheightmultiple"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"lineSpacing"]) {
-                paragraphStyle.lineSpacing = [[attributeDictionary objectForKey:@"lineSpacing"] doubleValue];
+            if ([attributeDictionary objectForKey:@"linespacing"]) {
+                paragraphStyle.lineSpacing = [[attributeDictionary objectForKey:@"linespacing"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"maximumLineHeight"]) {
-                paragraphStyle.maximumLineHeight = [[attributeDictionary objectForKey:@"maximumLineHeight"] doubleValue];
+            if ([attributeDictionary objectForKey:@"maximumlineheight"]) {
+                paragraphStyle.maximumLineHeight = [[attributeDictionary objectForKey:@"maximumlineheight"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"minimumLineHeight"]) {
-                paragraphStyle.minimumLineHeight = [[attributeDictionary objectForKey:@"minimumLineHeight"] doubleValue];
+            if ([attributeDictionary objectForKey:@"minimumlineheight"]) {
+                paragraphStyle.minimumLineHeight = [[attributeDictionary objectForKey:@"minimumlineheight"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"paragraphSpacing"]) {
-                paragraphStyle.paragraphSpacing = [[attributeDictionary objectForKey:@"paragraphSpacing"] doubleValue];
+            if ([attributeDictionary objectForKey:@"paragraphspacing"]) {
+                paragraphStyle.paragraphSpacing = [[attributeDictionary objectForKey:@"paragraphspacing"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"paragraphSpacingBefore"]) {
-                paragraphStyle.paragraphSpacingBefore = [[attributeDictionary objectForKey:@"paragraphSpacingBefore"] doubleValue];
+            if ([attributeDictionary objectForKey:@"paragraphspacingbefore"]) {
+                paragraphStyle.paragraphSpacingBefore = [[attributeDictionary objectForKey:@"paragraphspacingbefore"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"tailIndent"]) {
-                paragraphStyle.tailIndent = [[attributeDictionary objectForKey:@"tailIndent"] doubleValue];
+            if ([attributeDictionary objectForKey:@"tailindent"]) {
+                paragraphStyle.tailIndent = [[attributeDictionary objectForKey:@"tailindent"] doubleValue];
             }
             
             [nodeAttributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:nodeAttributedStringRange];
