@@ -50,6 +50,8 @@
         currentNode = currentNode->next;
     }
     
+    xmlFreeDoc(document);
+    
     return finalAttributedString;
 }
 
