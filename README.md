@@ -1,8 +1,9 @@
 NSAttributedString+DDHTML
 =========================
 
-Simplifies working with NSAttributedString by allowing you to use HTML to describe formatting behaviors.
+Simplifies working with attributed strings by allowing you to use HTML to describe formatting behaviors.
 
+NSAttributedString+DDHTML isn't intended to support full HTML rendering.  Instead it provides a quick, effient and light-weight implementation for leveraging attributed strings when utilizing native UIKit interface elements.
 
 ## License
 -----
