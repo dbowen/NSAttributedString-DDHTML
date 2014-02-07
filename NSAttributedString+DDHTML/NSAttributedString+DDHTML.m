@@ -174,10 +174,10 @@
                 [nodeAttributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:[fontSize doubleValue]] range:nodeAttributedStringRange];
             }
             else if (fontName != nil && fontSize == nil) {
-                [nodeAttributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:fontName size:12.0] range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSFontAttributeName value:[self fontOrSystemFontForName:fontName size:12.0] range:nodeAttributedStringRange];
             }
             else if (fontName != nil && fontSize != nil) {
-                [nodeAttributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:fontName size:[fontSize doubleValue]] range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSFontAttributeName value:[self fontOrSystemFontForName:fontName size:fontSize.floatValue] range:nodeAttributedStringRange];
             }
     
             if (foregroundColor) {
@@ -267,6 +267,14 @@
     }
     
     return nodeAttributedString;
+}
+
++ (UIFont *)fontOrSystemFontForName:(NSString *)fontName size:(CGFloat)fontSize {
+    UIFont * font = [UIFont fontWithName:fontName size:fontSize];
+    if(font) {
+        return font;
+    }
+    return [UIFont systemFontOfSize:fontSize];
 }
 
 + (UIColor *)colorFromHexString:(NSString *)hexString
