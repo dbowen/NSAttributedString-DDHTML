@@ -274,6 +274,18 @@
             
             [nodeAttributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:nodeAttributedStringRange];
         }
+        
+        // Links
+        else if (strncmp("a href", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            
+            xmlChar *value = xmlNodeListGetString(xmlNode->doc, xmlNode->xmlChildrenNode, 1);
+            if (value)
+            {
+                NSString *title = [NSString stringWithCString:(const char *)value encoding:NSUTF8StringEncoding];
+                NSString *link = [attributeDictionary objectForKey:@"href"];
+                [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
+            }
+        }
     }
     
     return nodeAttributedString;
