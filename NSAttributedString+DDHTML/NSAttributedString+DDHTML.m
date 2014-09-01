@@ -33,7 +33,7 @@
 
 @implementation NSAttributedString (DDHTML)
 
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     xmlDoc *document = htmlReadMemory([htmlString cStringUsingEncoding:NSUTF8StringEncoding], htmlString.length, nil, NULL, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     
@@ -44,7 +44,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -55,7 +55,7 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode boldFont:(UIFont *)boldFont
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
@@ -66,7 +66,7 @@
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -98,6 +98,13 @@
         if (strncmp("b", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             if (boldFont) {
                 [nodeAttributedString addAttribute:NSFontAttributeName value:boldFont range:nodeAttributedStringRange];
+            }
+        }
+        
+        // Italic Tag
+        else if (strncmp("i", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            if (italicFont) {
+                [nodeAttributedString addAttribute:NSFontAttributeName value:italicFont range:nodeAttributedStringRange];
             }
         }
         

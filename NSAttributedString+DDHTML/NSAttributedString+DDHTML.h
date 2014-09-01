@@ -32,6 +32,6 @@
 
 @interface NSAttributedString (DDHTML)
 
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont;
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont;
 
 @end
