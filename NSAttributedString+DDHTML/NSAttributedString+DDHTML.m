@@ -35,10 +35,15 @@
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
+    return [self attributedStringFromHTML:htmlString normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] boldFont:boldFont italicFont:italicFont];
+}
+
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
+{
     // Parse HTML string as XML document using UTF-8 encoding
     const char *encoding =[@"UTF-8" UTF8String];
     NSData* documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
-    xmlDoc *document = htmlReadMemory([documentData bytes], [documentData length], nil, encoding, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);    
+    xmlDoc *document = htmlReadMemory([documentData bytes], [documentData length], nil, encoding, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     
     if (document == NULL)
         return nil;
@@ -47,7 +52,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -58,18 +63,19 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
     if ((xmlNode->type != XML_ENTITY_REF_NODE) && ((xmlNode->type != XML_ELEMENT_NODE) && xmlNode->content != NULL)) {
-        [nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithCString:(const char *)xmlNode->content encoding:NSUTF8StringEncoding]]];
+        NSAttributedString *normalAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithCString:(const char *)xmlNode->content encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : normalFont}];
+        [nodeAttributedString appendAttributedString:normalAttributedString];
     }
     
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
