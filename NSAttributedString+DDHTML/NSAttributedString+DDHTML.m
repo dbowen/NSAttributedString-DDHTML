@@ -287,6 +287,11 @@
                 [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
             }
         }
+        
+        // Handle new lines
+        else if (strncmp("br", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+        }
     }
     
     return nodeAttributedString;
