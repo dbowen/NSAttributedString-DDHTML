@@ -22,12 +22,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    
-    UIFont *defaultFont = [UIFont systemFontOfSize:12.0];
-    UIFontDescriptor *defaultFontDescriptor = [defaultFont.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold | UIFontDescriptorTraitItalic];
-    UIFont *defaultFontItalic = [UIFont fontWithDescriptor:defaultFontDescriptor size:0];
-    
-    NSAttributedString *attrString = [NSAttributedString attributedStringFromHTML:@"<font face=\"Avenir-Heavy\" color=\"#FF0000\">This</font> <shadow>is</shadow> <b>Happy bold, <u>underlined</u>, <stroke width=\"2.0\" color=\"#00FF00\">awesomeness </stroke><a href=\"https://www.google.com\">link</a>!</b> <br/> <i>And some italic on the next line.</i>" boldFont:[UIFont boldSystemFontOfSize:12] italicFont:defaultFontItalic];
+    NSAttributedString *attrString = [NSAttributedString attributedStringFromHTML:@"<font face=\"Avenir-Heavy\" color=\"#FF0000\">This</font> <shadow>is</shadow> <b>Happy bold, <u>underlined</u>, <stroke width=\"2.0\" color=\"#00FF00\">awesomeness </stroke><a href=\"https://www.google.com\">link</a>!</b> <br/> <i>And some italic on the next line.</i>" boldFont:[UIFont boldSystemFontOfSize:12] italicFont:[UIFont italicSystemFontOfSize:12.0]];
     self.label.attributedText = attrString;
 }
 
