@@ -43,7 +43,7 @@ NSAttributedString+DDHTML requires a minimum iOS deployment target of iOS 4.3 be
 
 ### u - Underline
 
-### strike - Stikethrough
+### strike - Strikethrough
 
 ### stroke - Stroke
 * **color**: Color of stroke, e.g. stroke="#ff0000"
