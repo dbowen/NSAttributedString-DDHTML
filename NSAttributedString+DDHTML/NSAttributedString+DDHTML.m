@@ -35,10 +35,9 @@
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
-    // Parse HTML string as XML document using UTF-8 encoding
-    const char *encoding =[@"UTF-8" UTF8String];
-    NSData* documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
-    xmlDoc *document = htmlReadMemory([documentData bytes], [documentData length], nil, encoding, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);    
+	// Parse HTML string as XML document using UTF-8 encoding
+    NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+    xmlDoc *document = htmlReadMemory(documentData.bytes, (int)documentData.length, nil, "UTF-8", HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     
     if (document == NULL)
         return nil;
