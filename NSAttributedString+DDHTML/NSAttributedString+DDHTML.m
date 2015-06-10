@@ -55,8 +55,9 @@
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
     xmlDoc *document = htmlReadMemory(documentData.bytes, (int)documentData.length, nil, "UTF-8", HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     
-    if (document == NULL)
-        return nil;
+    if (document == NULL) {
+        return [[NSAttributedString alloc] initWithString:htmlString attributes:nil];
+    }
     
     NSMutableAttributedString *finalAttributedString = [[NSMutableAttributedString alloc] init];
     

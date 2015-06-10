@@ -30,6 +30,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSAttributedString (DDHTML)
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString;
@@ -37,3 +39,5 @@
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont;
 
 @end
+
+NS_ASSUME_NONNULL_END
