@@ -33,9 +33,20 @@
 
 @implementation NSAttributedString (DDHTML)
 
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString
+{
+    return [self attributedStringFromHTML:htmlString
+                               normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]
+                                 boldFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]
+                               italicFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]];
+}
+
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
-    return [self attributedStringFromHTML:htmlString normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] boldFont:boldFont italicFont:italicFont];
+    return [self attributedStringFromHTML:htmlString
+                               normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]
+                                 boldFont:boldFont
+                               italicFont:italicFont];
 }
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
@@ -293,7 +304,7 @@
             }
         }
         
-        // Handle new lines
+        // New Lines
         else if (strncmp("br", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             [nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
         }

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name      = 'NSAttributedString-DDHTML'
-  s.version   = '1.0'
+  s.version   = '1.1.0'
   s.license   = {
     :type => 'BSD',
     :text => <<-LICENSE

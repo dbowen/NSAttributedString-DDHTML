@@ -45,7 +45,7 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 	
 	...
 	
-	NSAttributedString *attributedString = [NSAttributedString attributedStringFromHTML:@"My <b>formatted</b> string." boldFont:[UIFont boldSystemFontOfSize:12.0]];
+	NSAttributedString *attributedString = [NSAttributedString attributedStringFromHTML:@"My <b>formatted</b> string."];
 	
 	...
 	
@@ -53,8 +53,9 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 ## Supported Tags
 -----
 
-### b - Bold
-* This tag only works if the boldFont parameter isn't nil.
+### b, strong - Bold
+
+### i - Italics
 
 ### u - Underline
 
@@ -75,6 +76,8 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 * **size**: Size of the text, e.g. size="12.0"
 * **color**: Color of the text, e.g. color="#fafafa"
 * **backgroundColor**: Color of the text background, e.g. backgroundColor="#333333"
+
+### br - Line Break
 
 ### p - Paragraph
 * **align**: Alignment of text, e.g. align="center"
