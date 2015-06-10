@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name      = 'NSAttributeString-DDHTML'
+  s.name      = 'NSAttributedString-DDHTML'
   s.version   = '1.0'
   s.license   = 'BSD'
   s.summary   = 'Simplifies working with NSAttributedString by allowing you to use HTML to describe formatting behaviors.'
