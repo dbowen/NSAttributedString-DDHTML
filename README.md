@@ -19,6 +19,21 @@ NSAttributedString+DDHTML requires a minimum iOS deployment target of iOS 4.3 be
 ## Setup
 -----
 
+### Using CocoaPods
+
+One of the easiest ways to integrate NSAttributedString+DDHTML in your project is to use [CocoaPods](http://cocoapods.org/):
+
+1. Add the following line to your `Podfile`:
+
+    ````ruby
+    pod "NSAttributedString-DDHTML"
+    ````
+
+2. In your project directory, run `pod update`
+3. You should now be able to add `#import <NSAttributedString-DDHTML/NSAttributedString+DDHTML.h>` to any of your target's source files to use the library!
+
+### Manual
+
 1. Add NSAttributedString+DDHTML.m/h to your project.
 2. Add *libxml2.dylib* to the *"Link Binary With Libraries"* section of your target's build phase.
 3. Add *${SDKROOT}/usr/include/libxml2* to your project's *Header Search Paths* under *Build Settings*.
