@@ -1,8 +1,8 @@
 //
 //  NSAttributedString+HTML.m
 //
-//  Created by Derek Bowen
-//  Copyright (c) 2012, Deloitte Digital
+//  Created by Derek Bowen <dbowen@demiurgic.co>
+//  Copyright (c) 2012-2015, Deloitte Digital
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
