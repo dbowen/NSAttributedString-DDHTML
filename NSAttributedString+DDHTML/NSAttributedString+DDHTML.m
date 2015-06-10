@@ -35,7 +35,12 @@
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
-	// Parse HTML string as XML document using UTF-8 encoding
+    return [self attributedStringFromHTML:htmlString normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] boldFont:boldFont italicFont:italicFont];
+}
+
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
+{
+    // Parse HTML string as XML document using UTF-8 encoding
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
     xmlDoc *document = htmlReadMemory(documentData.bytes, (int)documentData.length, nil, "UTF-8", HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     
@@ -46,7 +51,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -57,18 +62,19 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
     if ((xmlNode->type != XML_ENTITY_REF_NODE) && ((xmlNode->type != XML_ELEMENT_NODE) && xmlNode->content != NULL)) {
-        [nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithCString:(const char *)xmlNode->content encoding:NSUTF8StringEncoding]]];
+        NSAttributedString *normalAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithCString:(const char *)xmlNode->content encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : normalFont}];
+        [nodeAttributedString appendAttributedString:normalAttributedString];
     }
     
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -97,7 +103,8 @@
         }
         
         // Bold Tag
-        if (strncmp("b", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+        if (strncmp("b", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+            strncmp("strong", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             if (boldFont) {
                 [nodeAttributedString addAttribute:NSFontAttributeName value:boldFont range:nodeAttributedStringRange];
             }
@@ -284,6 +291,11 @@
                 NSString *link = [attributeDictionary objectForKey:@"href"];
                 [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
             }
+        }
+        
+        // Handle new lines
+        else if (strncmp("br", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
         }
     }
     
