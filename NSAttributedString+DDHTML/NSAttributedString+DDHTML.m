@@ -36,12 +36,11 @@
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString
 {
     UIFont *preferredBodyFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    CGFloat preferredBodyFontSize = preferredBodyFont.fontDescriptor.pointSize;
     
     return [self attributedStringFromHTML:htmlString
                                normalFont:preferredBodyFont
-                                 boldFont:[UIFont boldSystemFontOfSize:preferredBodyFontSize]
-                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFontSize]];
+                                 boldFont:[UIFont boldSystemFontOfSize:preferredBodyFont.pointSize]
+                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFont.pointSize]];
 }
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
