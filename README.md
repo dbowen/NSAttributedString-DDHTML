@@ -53,33 +53,33 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 ## Supported Tags
 -----
 
-### b, strong - Bold
+### b, strong - Bold (iOS, watchOS, tvOS)
 
-### i - Italics
+### i - Italics (iOS, watchOS, tvOS)
 
-### u - Underline
+### u - Underline (iOS, watchOS, tvOS)
 
-### strike - Strikethrough
+### strike - Strikethrough (iOS, watchOS, tvOS)
 
-### stroke - Stroke
+### stroke - Stroke (iOS, watchOS, tvOS)
 * **color**: Color of stroke, e.g. stroke="#ff0000"
 * **width**: Width of stroke, e.g. stroke="2.0"
 * **nofill**: If present text color will be transparent
 
-### shadow - Shadow
+### shadow - Shadow (iOS, tvOS)
 * **offset**: Amount to offset shadow from center of text, e.g. offset="{1.0, 1.0}"
 * **blurRadius**: Radius/thickness of the shadow
 * **color**: Color of the shadow
 
-### font - Font
+### font - Font (iOS, watchOS, tvOS)
 * **face**: Name of font to use, e.g. face="Avenir-Heavy"
 * **size**: Size of the text, e.g. size="12.0"
 * **color**: Color of the text, e.g. color="#fafafa"
 * **backgroundColor**: Color of the text background, e.g. backgroundColor="#333333"
 
-### br - Line Break
+### br - Line Break (iOS, watchOS, tvOS)
 
-### p - Paragraph
+### p - Paragraph (iOS, watchOS, tvOS)
 * **align**: Alignment of text, e.g. align="center"
   * Available values: left, center, right, justify
 * **lineBreakMode**: How to handle text which doesn't fit horizontally in the view
@@ -95,7 +95,7 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 * **paragraphSpacingBefore**
 * **tailIndent**
 
-### img - Image 
+### img - Image (iOS, tvOS)
 * src : key in imagerMapper parameter
 * width : px
 * height : px

@@ -35,16 +35,19 @@
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString
 {
+    UIFont *preferredBodyFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    CGFloat preferredBodyFontSize = preferredBodyFont.fontDescriptor.pointSize;
+    
     return [self attributedStringFromHTML:htmlString
-                               normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]
-                                 boldFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]
-                               italicFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]];
+                               normalFont:preferredBodyFont
+                                 boldFont:[UIFont boldSystemFontOfSize:preferredBodyFontSize]
+                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFontSize]];
 }
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     return [self attributedStringFromHTML:htmlString
-                               normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]
+                               normalFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
                                  boldFont:boldFont
                                italicFont:italicFont];
 }
@@ -168,22 +171,24 @@
         
         // Shadow Tag
         else if (strncmp("shadow", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            NSShadow *shadow = [[NSShadow alloc] init];
-            shadow.shadowOffset = CGSizeMake(0, 0);
-            shadow.shadowBlurRadius = 2.0;
-            shadow.shadowColor = [UIColor blackColor];
+            #if !(TARGET_OS_WATCH)
+                NSShadow *shadow = [[NSShadow alloc] init];
+                shadow.shadowOffset = CGSizeMake(0, 0);
+                shadow.shadowBlurRadius = 2.0;
+                shadow.shadowColor = [UIColor blackColor];
+                
+                if (attributeDictionary[@"offset"]) {
+                    shadow.shadowOffset = CGSizeFromString(attributeDictionary[@"offset"]);
+                }
+                if (attributeDictionary[@"blurradius"]) {
+                    shadow.shadowBlurRadius = [attributeDictionary[@"blurradius"] doubleValue];
+                }
+                if (attributeDictionary[@"color"]) {
+                    shadow.shadowColor = [self colorFromHexString:attributeDictionary[@"color"]];
+                }
             
-            if (attributeDictionary[@"offset"]) {
-                shadow.shadowOffset = CGSizeFromString(attributeDictionary[@"offset"]);
-            }
-            if (attributeDictionary[@"blurradius"]) {
-                shadow.shadowBlurRadius = [attributeDictionary[@"blurradius"] doubleValue];
-            }
-            if (attributeDictionary[@"color"]) {
-                shadow.shadowColor = [self colorFromHexString:attributeDictionary[@"color"]];
-            }
-            
-            [nodeAttributedString addAttribute:NSShadowAttributeName value:shadow range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSShadowAttributeName value:shadow range:nodeAttributedStringRange];
+            #endif
         }
         
         // Font Tag
@@ -320,26 +325,28 @@
         
         // Images
         else if (strncmp("img", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            NSString *src = attributeDictionary[@"src"];
-            NSString *width = attributeDictionary[@"width"];
-            NSString *height = attributeDictionary[@"height"];
-    
-            if (src != nil) {
-                UIImage *image = imageMap[src];
-                if (image == nil) {
-                    image = [UIImage imageNamed:src];
-                }
-                
-                if (image != nil) {
-                    NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
-                    imageAttachment.image = image;
-                    if (width != nil && height != nil) {
-                        imageAttachment.bounds = CGRectMake(0, 0, [width integerValue] / 2, [height integerValue] / 2);
+            #if !(TARGET_OS_WATCH)
+                NSString *src = attributeDictionary[@"src"];
+                NSString *width = attributeDictionary[@"width"];
+                NSString *height = attributeDictionary[@"height"];
+        
+                if (src != nil) {
+                    UIImage *image = imageMap[src];
+                    if (image == nil) {
+                        image = [UIImage imageNamed:src];
                     }
-                    NSAttributedString *imageAttributeString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
-                    [nodeAttributedString appendAttributedString:imageAttributeString];
+                    
+                    if (image != nil) {
+                        NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+                        imageAttachment.image = image;
+                        if (width != nil && height != nil) {
+                            imageAttachment.bounds = CGRectMake(0, 0, [width integerValue] / 2, [height integerValue] / 2);
+                        }
+                        NSAttributedString *imageAttributeString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+                        [nodeAttributedString appendAttributedString:imageAttributeString];
+                    }
                 }
-            }
+            #endif
         }
     }
     
