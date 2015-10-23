@@ -20,7 +20,7 @@
 		AA9A4B9D166FE7A80006F4EE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9A4B9C166FE7A80006F4EE /* ViewController.m */; };
 		AA9A4BA7166FF1AA0006F4EE /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9A4BA6166FF1AA0006F4EE /* libxml2.dylib */; };
 		AAA378A816701A280092D30F /* NSAttributedString+DDHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378A716701A280092D30F /* NSAttributedString+DDHTML.m */; };
-		D11933B11BD0883F00E34F3A /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = D11933B01BD0883F00E34F3A /* car.png */; settings = {ASSET_TAGS = (); }; };
+		D11933B11BD0883F00E34F3A /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = D11933B01BD0883F00E34F3A /* car.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -283,6 +283,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HTMLToAttributedString/HTMLToAttributedString-Prefix.pch";
 				INFOPLIST_FILE = "HTMLToAttributedString/HTMLToAttributedString-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -296,6 +297,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HTMLToAttributedString/HTMLToAttributedString-Prefix.pch";
 				INFOPLIST_FILE = "HTMLToAttributedString/HTMLToAttributedString-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";

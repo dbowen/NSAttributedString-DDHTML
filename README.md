@@ -12,9 +12,9 @@ It is open source and covered by a standard BSD license. That means you have to 
 
 ## Requirements
 -----
-NSAttributedString+DDHTML requires a minimum iOS deployment target of iOS 4.3 becuse of:
+NSAttributedString+DDHTML requires a minimum iOS deployment target of iOS 7.0 because of:
 
-* ARC
+* NSTextAttachment
 
 ## Setup
 -----

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name      = 'NSAttributedString-DDHTML'
-  s.version   = '1.1.0'
+  s.version   = '1.2.0'
   s.license   = {
     :type => 'BSD',
     :text => <<-LICENSE
@@ -33,7 +33,9 @@ Pod::Spec.new do |s|
   s.source    = { :git => 'https://github.com/dbowen/NSAttributedString-DDHTML.git', :tag => "v#{s.version}" }
   s.description  = 'Simplifies working with NSAttributedString by allowing you to use HTML to describe formatting behaviors.'
   s.requires_arc = true
-  s.ios.deployment_target = '6.1'
+  s.ios.deployment_target = '7.0'
+  s.tvos.deployment_target = '9.0'
+  s.watchos.deployment_target = '2.0'
 
   s.source_files = 'NSAttributedString+DDHTML'
   s.libraries = 'xml2'
