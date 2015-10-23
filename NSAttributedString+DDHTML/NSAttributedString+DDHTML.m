@@ -48,8 +48,16 @@
                                  boldFont:boldFont
                                italicFont:italicFont];
 }
-
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
+{
+    return [self attributedStringFromHTML:htmlString
+                               normalFont:normalFont
+                                 boldFont:boldFont
+                               italicFont:italicFont
+                                 imageMap:@{}];
+}
+
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     // Parse HTML string as XML document using UTF-8 encoding
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
@@ -63,7 +71,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -74,7 +82,7 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
@@ -86,7 +94,7 @@
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -144,13 +152,13 @@
             UIColor *strokeColor = [UIColor purpleColor];
             NSNumber *strokeWidth = @(1.0);
             
-            if ([attributeDictionary objectForKey:@"color"]) {
-                strokeColor = [self colorFromHexString:[attributeDictionary objectForKey:@"color"]];
+            if (attributeDictionary[@"color"]) {
+                strokeColor = [self colorFromHexString:attributeDictionary[@"color"]];
             }
-            if ([attributeDictionary objectForKey:@"width"]) {
-                strokeWidth = @(fabs([[attributeDictionary objectForKey:@"width"] doubleValue]));
+            if (attributeDictionary[@"width"]) {
+                strokeWidth = @(fabs([attributeDictionary[@"width"] doubleValue]));
             }
-            if (![attributeDictionary objectForKey:@"nofill"]) {
+            if (!attributeDictionary[@"nofill"]) {
                 strokeWidth = @(-fabs([strokeWidth doubleValue]));
             }
             
@@ -165,14 +173,14 @@
             shadow.shadowBlurRadius = 2.0;
             shadow.shadowColor = [UIColor blackColor];
             
-            if ([attributeDictionary objectForKey:@"offset"]) {
-                shadow.shadowOffset = CGSizeFromString([attributeDictionary objectForKey:@"offset"]);
+            if (attributeDictionary[@"offset"]) {
+                shadow.shadowOffset = CGSizeFromString(attributeDictionary[@"offset"]);
             }
-            if ([attributeDictionary objectForKey:@"blurradius"]) {
-                shadow.shadowBlurRadius = [[attributeDictionary objectForKey:@"blurradius"] doubleValue];
+            if (attributeDictionary[@"blurradius"]) {
+                shadow.shadowBlurRadius = [attributeDictionary[@"blurradius"] doubleValue];
             }
-            if ([attributeDictionary objectForKey:@"color"]) {
-                shadow.shadowColor = [self colorFromHexString:[attributeDictionary objectForKey:@"color"]];
+            if (attributeDictionary[@"color"]) {
+                shadow.shadowColor = [self colorFromHexString:attributeDictionary[@"color"]];
             }
             
             [nodeAttributedString addAttribute:NSShadowAttributeName value:shadow range:nodeAttributedStringRange];
@@ -185,17 +193,17 @@
             UIColor *foregroundColor = nil;
             UIColor *backgroundColor = nil;
             
-            if ([attributeDictionary objectForKey:@"face"]) {
-                fontName = [attributeDictionary objectForKey:@"face"];
+            if (attributeDictionary[@"face"]) {
+                fontName = attributeDictionary[@"face"];
             }
-            if ([attributeDictionary objectForKey:@"size"]) {
-                fontSize = @([[attributeDictionary objectForKey:@"size"] doubleValue]);
+            if (attributeDictionary[@"size"]) {
+                fontSize = @([attributeDictionary[@"size"] doubleValue]);
             }
-            if ([attributeDictionary objectForKey:@"color"]) {
-                foregroundColor = [self colorFromHexString:[attributeDictionary objectForKey:@"color"]];
+            if (attributeDictionary[@"color"]) {
+                foregroundColor = [self colorFromHexString:attributeDictionary[@"color"]];
             }
-            if ([attributeDictionary objectForKey:@"backgroundcolor"]) {
-                backgroundColor = [self colorFromHexString:[attributeDictionary objectForKey:@"backgroundcolor"]];
+            if (attributeDictionary[@"backgroundcolor"]) {
+                backgroundColor = [self colorFromHexString:attributeDictionary[@"backgroundcolor"]];
             }
     
             if (fontName == nil && fontSize != nil) {
@@ -221,7 +229,7 @@
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
             
             if ([attributeDictionary objectForKey:@"align"]) {
-                NSString *alignString = [[attributeDictionary objectForKey:@"align"] lowercaseString];
+                NSString *alignString = [attributeDictionary[@"align"] lowercaseString];
                 
                 if ([alignString isEqualToString:@"left"]) {
                     paragraphStyle.alignment = NSTextAlignmentLeft;
@@ -237,7 +245,7 @@
                 }
             }
             if ([attributeDictionary objectForKey:@"linebreakmode"]) {
-                NSString *lineBreakModeString = [[attributeDictionary objectForKey:@"linebreakmode"] lowercaseString];
+                NSString *lineBreakModeString = [attributeDictionary[@"linebreakmode"] lowercaseString];
                 
                 if ([lineBreakModeString isEqualToString:@"wordwrapping"]) {
                     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
@@ -260,34 +268,34 @@
             }
             
             if ([attributeDictionary objectForKey:@"firstlineheadindent"]) {
-                paragraphStyle.firstLineHeadIndent = [[attributeDictionary objectForKey:@"firstlineheadindent"] doubleValue];
+                paragraphStyle.firstLineHeadIndent = [attributeDictionary[@"firstlineheadindent"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"headindent"]) {
-                paragraphStyle.headIndent = [[attributeDictionary objectForKey:@"headindent"] doubleValue];
+                paragraphStyle.headIndent = [attributeDictionary[@"headindent"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"hyphenationfactor"]) {
-                paragraphStyle.hyphenationFactor = [[attributeDictionary objectForKey:@"hyphenationfactor"] doubleValue];
+                paragraphStyle.hyphenationFactor = [attributeDictionary[@"hyphenationfactor"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"lineheightmultiple"]) {
-                paragraphStyle.lineHeightMultiple = [[attributeDictionary objectForKey:@"lineheightmultiple"] doubleValue];
+                paragraphStyle.lineHeightMultiple = [attributeDictionary[@"lineheightmultiple"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"linespacing"]) {
-                paragraphStyle.lineSpacing = [[attributeDictionary objectForKey:@"linespacing"] doubleValue];
+                paragraphStyle.lineSpacing = [attributeDictionary[@"linespacing"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"maximumlineheight"]) {
-                paragraphStyle.maximumLineHeight = [[attributeDictionary objectForKey:@"maximumlineheight"] doubleValue];
+                paragraphStyle.maximumLineHeight = [attributeDictionary[@"maximumlineheight"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"minimumlineheight"]) {
-                paragraphStyle.minimumLineHeight = [[attributeDictionary objectForKey:@"minimumlineheight"] doubleValue];
+                paragraphStyle.minimumLineHeight = [attributeDictionary[@"minimumlineheight"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"paragraphspacing"]) {
-                paragraphStyle.paragraphSpacing = [[attributeDictionary objectForKey:@"paragraphspacing"] doubleValue];
+                paragraphStyle.paragraphSpacing = [attributeDictionary[@"paragraphspacing"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"paragraphspacingbefore"]) {
-                paragraphStyle.paragraphSpacingBefore = [[attributeDictionary objectForKey:@"paragraphspacingbefore"] doubleValue];
+                paragraphStyle.paragraphSpacingBefore = [attributeDictionary[@"paragraphspacingbefore"] doubleValue];
             }
             if ([attributeDictionary objectForKey:@"tailindent"]) {
-                paragraphStyle.tailIndent = [[attributeDictionary objectForKey:@"tailindent"] doubleValue];
+                paragraphStyle.tailIndent = [attributeDictionary[@"tailindent"] doubleValue];
             }
             
             [nodeAttributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:nodeAttributedStringRange];
@@ -300,7 +308,7 @@
             if (value)
             {
                 NSString *title = [NSString stringWithCString:(const char *)value encoding:NSUTF8StringEncoding];
-                NSString *link = [attributeDictionary objectForKey:@"href"];
+                NSString *link = attributeDictionary[@"href"];
                 [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
             }
         }
@@ -312,12 +320,15 @@
         
         // Images
         else if (strncmp("img", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            NSString *src = [attributeDictionary objectForKey:@"src"];
-            NSString *width = [attributeDictionary objectForKey:@"width"];
-            NSString *height = [attributeDictionary objectForKey:@"height"];
+            NSString *src = attributeDictionary[@"src"];
+            NSString *width = attributeDictionary[@"width"];
+            NSString *height = attributeDictionary[@"height"];
     
             if (src != nil) {
-                UIImage *image = [UIImage imageNamed:src];
+                UIImage *image = imageMap[src];
+                if (image == nil) {
+                    image = [UIImage imageNamed:src];
+                }
                 
                 if (image != nil) {
                     NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
