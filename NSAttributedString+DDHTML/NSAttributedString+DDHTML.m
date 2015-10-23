@@ -170,7 +170,7 @@
         
         // Shadow Tag
         else if (strncmp("shadow", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            #if !(TARGET_OS_WATCH)
+            #if __has_include(<UIKit/NSShadow.h>)
                 NSShadow *shadow = [[NSShadow alloc] init];
                 shadow.shadowOffset = CGSizeMake(0, 0);
                 shadow.shadowBlurRadius = 2.0;
@@ -324,7 +324,7 @@
         
         // Images
         else if (strncmp("img", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            #if !(TARGET_OS_WATCH)
+            #if __has_include(<UIKit/NSTextAttachment.h>)
                 NSString *src = attributeDictionary[@"src"];
                 NSString *width = attributeDictionary[@"width"];
                 NSString *height = attributeDictionary[@"height"];
