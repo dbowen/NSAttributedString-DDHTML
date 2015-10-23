@@ -29,6 +29,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,15 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString;
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont;
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont;
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMapper:(NSDictionary*)imageMapper;
 
-/**
- *  可替换img标签
- *
- *  @param htmlString  HTML
- *  @param imageMapper NSString(img标签的src属性内容) - UIImage
- */
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString imageMapper:(NSDictionary*)imageMapper;
 @end
 
 NS_ASSUME_NONNULL_END

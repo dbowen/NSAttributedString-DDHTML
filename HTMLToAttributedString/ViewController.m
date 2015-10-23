@@ -27,9 +27,6 @@
                                                                        normalFont:[UIFont systemFontOfSize:12]
                                                                          boldFont:[UIFont boldSystemFontOfSize:12]
                                                                        italicFont:[UIFont italicSystemFontOfSize:12.0]
-                                                                      imageMapper:@{
-                                                                                    @"car.png":[UIImage imageNamed:@"car"]
-                                                                                    }
                                       ];
     self.label.attributedText = attrString;
 }

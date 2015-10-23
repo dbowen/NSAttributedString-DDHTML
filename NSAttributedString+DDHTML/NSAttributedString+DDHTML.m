@@ -51,15 +51,6 @@
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
-    return [self attributedStringFromHTML:htmlString
-                               normalFont:normalFont
-                                 boldFont:boldFont
-                               italicFont:italicFont
-                              imageMapper:@{}];
-}
-
-+(NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMapper:(NSDictionary *)imageMapper
-{
     // Parse HTML string as XML document using UTF-8 encoding
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
     xmlDoc *document = htmlReadMemory(documentData.bytes, (int)documentData.length, nil, "UTF-8", HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
@@ -72,7 +63,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMapper:imageMapper];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -83,7 +74,7 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMapper:(NSDictionary *)imageMapper
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
@@ -95,7 +86,7 @@
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMapper:imageMapper];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -321,27 +312,18 @@
         
         // Images
         else if (strncmp("img", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
-            NSString *src = nil;
-            NSNumber *width = nil;
-            NSNumber *height = nil;
-            
-            if ([attributeDictionary objectForKey:@"src"]) {
-                src = [attributeDictionary objectForKey:@"src"];
-            }
-            if ([attributeDictionary objectForKey:@"width"]) {
-                width = @([[attributeDictionary objectForKey:@"width"] integerValue]);
-            }
-            if ([attributeDictionary objectForKey:@"height"]) {
-                height = @([[attributeDictionary objectForKey:@"height"] integerValue]);
-            }
+            NSString *src = [attributeDictionary objectForKey:@"src"];
+            NSString *width = [attributeDictionary objectForKey:@"width"];
+            NSString *height = [attributeDictionary objectForKey:@"height"];
     
-            if(src != nil){
-                UIImage *foundImage = [imageMapper objectForKey:src];
-                if(foundImage){
-                    NSTextAttachment *imageAttachment = [[NSTextAttachment alloc]init];
-                    imageAttachment.image = foundImage;
-                    if(width != nil && height != nil){
-                        imageAttachment.bounds = CGRectMake(0, 0, [width integerValue]/2, [height integerValue]/2);
+            if (src != nil) {
+                UIImage *image = [UIImage imageNamed:src];
+                
+                if (image != nil) {
+                    NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+                    imageAttachment.image = image;
+                    if (width != nil && height != nil) {
+                        imageAttachment.bounds = CGRectMake(0, 0, [width integerValue] / 2, [height integerValue] / 2);
                     }
                     NSAttributedString *imageAttributeString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
                     [nodeAttributedString appendAttributedString:imageAttributeString];
@@ -371,14 +353,6 @@
     NSUInteger hexValue = strtoul([hexString cStringUsingEncoding:NSUTF8StringEncoding], &p, 16);
 
     return [UIColor colorWithRed:((hexValue & 0xff0000) >> 16) / 255.0 green:((hexValue & 0xff00) >> 8) / 255.0 blue:(hexValue & 0xff) / 255.0 alpha:1.0];
-}
-
-+(NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString imageMapper:(NSDictionary *)imageMapper{
-    return [self attributedStringFromHTML:htmlString
-                               normalFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]
-                                 boldFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]
-                               italicFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]
-                              imageMapper:imageMapper];
 }
 
 @end
