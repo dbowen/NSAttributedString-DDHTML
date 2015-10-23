@@ -94,3 +94,9 @@ One of the easiest ways to integrate NSAttributedString+DDHTML in your project i
 * **paragraphSpacing**
 * **paragraphSpacingBefore**
 * **tailIndent**
+
+### img - Image 
+* src : key in imagerMapper parameter
+* width : px
+* height : px
+

@@ -20,6 +20,7 @@
 		AA9A4B9D166FE7A80006F4EE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9A4B9C166FE7A80006F4EE /* ViewController.m */; };
 		AA9A4BA7166FF1AA0006F4EE /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9A4BA6166FF1AA0006F4EE /* libxml2.dylib */; };
 		AAA378A816701A280092D30F /* NSAttributedString+DDHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378A716701A280092D30F /* NSAttributedString+DDHTML.m */; };
+		D11933B11BD0883F00E34F3A /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = D11933B01BD0883F00E34F3A /* car.png */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		AA9A4BA6166FF1AA0006F4EE /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AAA378A616701A280092D30F /* NSAttributedString+DDHTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+DDHTML.h"; sourceTree = "<group>"; };
 		AAA378A716701A280092D30F /* NSAttributedString+DDHTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+DDHTML.m"; sourceTree = "<group>"; };
+		D11933B01BD0883F00E34F3A /* car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		AA9A4B87166FE7A80006F4EE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D11933B01BD0883F00E34F3A /* car.png */,
 				AA9A4B88166FE7A80006F4EE /* HTMLToAttributedString-Info.plist */,
 				AA9A4B89166FE7A80006F4EE /* InfoPlist.strings */,
 				AA9A4B8C166FE7A80006F4EE /* main.m */,
@@ -178,6 +181,7 @@
 				AA9A4B8B166FE7A80006F4EE /* InfoPlist.strings in Resources */,
 				AA9A4B93166FE7A80006F4EE /* Default.png in Resources */,
 				AA9A4B95166FE7A80006F4EE /* Default@2x.png in Resources */,
+				D11933B11BD0883F00E34F3A /* car.png in Resources */,
 				AA9A4B97166FE7A80006F4EE /* Default-568h@2x.png in Resources */,
 				AA9A4B9A166FE7A80006F4EE /* MainStoryboard.storyboard in Resources */,
 			);
