@@ -146,7 +146,8 @@
         }
         
         // Stike Tag
-        else if (strcmp("strike", (const char *)xmlNode->name) == 0) {
+        else if (strcmp("strike", (const char *)xmlNode->name) == 0 ||
+                 strcmp("s", (const char *)xmlNode->name) == 0) {
             [nodeAttributedString addAttribute:NSStrikethroughStyleAttributeName value:@(YES) range:nodeAttributedStringRange];
         }
         
