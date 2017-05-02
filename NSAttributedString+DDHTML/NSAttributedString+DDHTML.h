@@ -48,8 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Generates an attributed string from HTML.
  *
  *  @param htmlString HTML String
- *  @param boldFont   Font to use for <b> and <strong> tags
- *  @param italicFont Font to use for <i> and <em> tags
+ *  @param boldFont   Font to use for \<b\> and \<strong\> tags
+ *  @param italicFont Font to use for \<i\> and \<em\> tags
  *
  *  @return Attributed string
  */
@@ -60,8 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param htmlString HTML String
  *  @param normalFont Font to use for general text
- *  @param boldFont   Font to use for <b> and <strong> tags
- *  @param italicFont Font to use for <i> and <em> tags
+ *  @param boldFont   Font to use for \<b\> and \<strong\> tags
+ *  @param italicFont Font to use for \<i\> and \<em\> tags
  *
  *  @return Attributed string
  */
@@ -72,8 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param htmlString   HTML String
  *  @param normalFont   Font to use for general text
- *  @param boldFont     Font to use for <b> and <strong> tags
- *  @param italicFont   Font to use for <i> and <em> tags
+ *  @param boldFont     Font to use for \<b\> and \<strong\> tags
+ *  @param italicFont   Font to use for \<i\> and \<em\> tags
  *  @param imageMap     Images to use in place of standard bundle images.
  *
  *  @return Attributed string
