@@ -137,6 +137,7 @@
                  strncmp("em", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             if (italicFont) {
                 [nodeAttributedString addAttribute:NSFontAttributeName value:italicFont range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSObliquenessAttributeName value:[[NSNumber alloc] initWithFloat:0.25] range:nodeAttributedStringRange];
             }
         }
         
