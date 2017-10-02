@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8446E109CDA022CBAE722923 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8446E095F5342142A33DE285 /* Localizable.strings */; };
 		AA9A4B81166FE7A80006F4EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9A4B80166FE7A80006F4EE /* UIKit.framework */; };
 		AA9A4B83166FE7A80006F4EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9A4B82166FE7A80006F4EE /* Foundation.framework */; };
 		AA9A4B85166FE7A80006F4EE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9A4B84166FE7A80006F4EE /* CoreGraphics.framework */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8446E095F5342142A33DE285 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		AA9A4B7C166FE7A80006F4EE /* HTMLToAttributedString.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTMLToAttributedString.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9A4B80166FE7A80006F4EE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AA9A4B82166FE7A80006F4EE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -99,6 +101,7 @@
 				AA9A4B9B166FE7A80006F4EE /* ViewController.h */,
 				AA9A4B9C166FE7A80006F4EE /* ViewController.m */,
 				AA9A4B87166FE7A80006F4EE /* Supporting Files */,
+				8446E095F5342142A33DE285 /* Localizable.strings */,
 			);
 			path = HTMLToAttributedString;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 				D11933B11BD0883F00E34F3A /* car.png in Resources */,
 				AA9A4B97166FE7A80006F4EE /* Default-568h@2x.png in Resources */,
 				AA9A4B9A166FE7A80006F4EE /* MainStoryboard.storyboard in Resources */,
+				8446E109CDA022CBAE722923 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
