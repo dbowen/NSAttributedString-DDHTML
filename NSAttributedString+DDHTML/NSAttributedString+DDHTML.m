@@ -40,7 +40,8 @@
     return [self attributedStringFromHTML:htmlString
                                normalFont:preferredBodyFont
                                  boldFont:[UIFont boldSystemFontOfSize:preferredBodyFont.pointSize]
-                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFont.pointSize]];
+                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFont.pointSize]
+                                fixedFont:[UIFont fontWithName:@"Menlo-Regular" size:preferredBodyFont.pointSize]];
 }
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
@@ -56,10 +57,22 @@
                                normalFont:normalFont
                                  boldFont:boldFont
                                italicFont:italicFont
+                                fixedFont:[UIFont fontWithName:@"Menlo-Regular" size:normalFont.pointSize]
                                  imageMap:@{}];
 }
 
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont
+{
+    return [self attributedStringFromHTML:htmlString
+                               normalFont:normalFont
+                                 boldFont:boldFont
+                               italicFont:italicFont
+                                fixedFont:fixedFont
+                                 imageMap:@{}];
+}
+
+
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     // Parse HTML string as XML document using UTF-8 encoding
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
@@ -73,7 +86,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont fixedFont:fixedFont imageMap:imageMap];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -84,7 +97,12 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode
+                                      normalFont:(UIFont *)normalFont
+                                        boldFont:(UIFont *)boldFont
+                                      italicFont:(UIFont *)italicFont
+                                       fixedFont:(UIFont *)fixedFont
+                                        imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
@@ -96,7 +114,7 @@
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont fixedFont:fixedFont imageMap:imageMap];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -124,6 +142,14 @@
             }
         }
         
+        // Code/Samp tags
+        if (strncmp("code", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+            strncmp("samp", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            if (fixedFont) {
+                [nodeAttributedString addAttribute:NSFontAttributeName value:fixedFont range:nodeAttributedStringRange];
+            }
+        }
+
         // Bold Tag
         if (strncmp("b", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
             strncmp("strong", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {

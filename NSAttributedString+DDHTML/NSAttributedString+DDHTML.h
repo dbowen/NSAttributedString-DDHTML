@@ -70,6 +70,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Generates an attributed string from HTML.
  *
+ *  @param htmlString HTML String
+ *  @param normalFont Font to use for general text
+ *  @param boldFont   Font to use for \<b\> and \<strong\> tags
+ *  @param italicFont Font to use for \<i\> and \<em\> tags
+ *  @param fixedFont  Font to use for \<code\> and \<samp\> tags
+ *
+ *  @return Attributed string
+ */
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont;
+
+/**
+ *  Generates an attributed string from HTML.
+ *
  *  @param htmlString   HTML String
  *  @param normalFont   Font to use for general text
  *  @param boldFont     Font to use for \<b\> and \<strong\> tags
@@ -78,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Attributed string
  */
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap;
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap;
 
 @end
 
