@@ -29,6 +29,7 @@
 //
 
 #import "NSAttributedString+DDHTML.h"
+#import <CoreText/CTStringAttributes.h>
 #include <libxml/HTMLparser.h>
 
 @implementation NSAttributedString (DDHTML)
@@ -142,11 +143,46 @@
             }
         }
         
+        // Mark tag
+        else if (strncmp("mark", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor yellowColor] range:nodeAttributedStringRange];
+        }
+
+        // h5 tag
+        else if (strncmp("h5", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+3.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+
+        // h3 tag
+        else if (strncmp("h3", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+6.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+        // h1 tag
+        else if (strncmp("h1", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+9.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+        
+        // Superscript tag
+        else if (strncmp("sup", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:(NSString*)kCTSuperscriptAttributeName value:@"1" range:nodeAttributedStringRange];
+        }
+        
+        // Subscript tag
+        else if (strncmp("sub", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:(NSString*)kCTSuperscriptAttributeName value:@"-1" range:nodeAttributedStringRange];
+        }
+
+
         // Code/Samp tags
         if (strncmp("code", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
             strncmp("samp", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             if (fixedFont) {
+                UIColor *backgroundColorRef = [UIColor colorWithRed:236.0f/255.0f green:222.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
                 [nodeAttributedString addAttribute:NSFontAttributeName value:fixedFont range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSBackgroundColorAttributeName value:backgroundColorRef range:nodeAttributedStringRange];
             }
         }
 
