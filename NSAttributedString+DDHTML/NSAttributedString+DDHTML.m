@@ -318,7 +318,12 @@
             {
                 NSString *title = [NSString stringWithCString:(const char *)value encoding:NSUTF8StringEncoding];
                 NSString *link = attributeDictionary[@"href"];
-                [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
+                // Sometimes, an a tag may not have a corresponding href attribute.
+		// This should not be added as an attribute.
+		if (link)
+		{
+                    [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
+		}
             }
         }
         
