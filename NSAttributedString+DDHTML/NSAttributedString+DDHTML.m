@@ -29,6 +29,7 @@
 //
 
 #import "NSAttributedString+DDHTML.h"
+#import <CoreText/CTStringAttributes.h>
 #include <libxml/HTMLparser.h>
 
 @implementation NSAttributedString (DDHTML)
@@ -40,7 +41,8 @@
     return [self attributedStringFromHTML:htmlString
                                normalFont:preferredBodyFont
                                  boldFont:[UIFont boldSystemFontOfSize:preferredBodyFont.pointSize]
-                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFont.pointSize]];
+                               italicFont:[UIFont italicSystemFontOfSize:preferredBodyFont.pointSize]
+                                fixedFont:[UIFont fontWithName:@"Menlo-Regular" size:preferredBodyFont.pointSize]];
 }
 
 + (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont
@@ -56,10 +58,22 @@
                                normalFont:normalFont
                                  boldFont:boldFont
                                italicFont:italicFont
+                                fixedFont:[UIFont fontWithName:@"Menlo-Regular" size:normalFont.pointSize]
                                  imageMap:@{}];
 }
 
-+ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont
+{
+    return [self attributedStringFromHTML:htmlString
+                               normalFont:normalFont
+                                 boldFont:boldFont
+                               italicFont:italicFont
+                                fixedFont:fixedFont
+                                 imageMap:@{}];
+}
+
+
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont fixedFont:(UIFont *)fixedFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     // Parse HTML string as XML document using UTF-8 encoding
     NSData *documentData = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
@@ -73,7 +87,7 @@
     
     xmlNodePtr currentNode = document->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont fixedFont:fixedFont imageMap:imageMap];
         [finalAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -84,7 +98,12 @@
     return finalAttributedString;
 }
 
-+ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode normalFont:(UIFont *)normalFont boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
++ (NSAttributedString *)attributedStringFromNode:(xmlNodePtr)xmlNode
+                                      normalFont:(UIFont *)normalFont
+                                        boldFont:(UIFont *)boldFont
+                                      italicFont:(UIFont *)italicFont
+                                       fixedFont:(UIFont *)fixedFont
+                                        imageMap:(NSDictionary<NSString *, UIImage *> *)imageMap
 {
     NSMutableAttributedString *nodeAttributedString = [[NSMutableAttributedString alloc] init];
     
@@ -96,7 +115,7 @@
     // Handle children
     xmlNodePtr currentNode = xmlNode->children;
     while (currentNode != NULL) {
-        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont imageMap:imageMap];
+        NSAttributedString *childString = [self attributedStringFromNode:currentNode normalFont:normalFont boldFont:boldFont italicFont:italicFont fixedFont:fixedFont imageMap:imageMap];
         [nodeAttributedString appendAttributedString:childString];
         
         currentNode = currentNode->next;
@@ -124,6 +143,49 @@
             }
         }
         
+        // Mark tag
+        else if (strncmp("mark", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor yellowColor] range:nodeAttributedStringRange];
+        }
+
+        // h5 tag
+        else if (strncmp("h5", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+3.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+
+        // h3 tag
+        else if (strncmp("h3", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+6.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+        // h1 tag
+        else if (strncmp("h1", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            UIFont *headingFont = [boldFont fontWithSize:(boldFont.pointSize+9.0)];
+            [nodeAttributedString addAttribute:NSFontAttributeName value:headingFont range:nodeAttributedStringRange];
+        }
+        
+        // Superscript tag
+        else if (strncmp("sup", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:(NSString*)kCTSuperscriptAttributeName value:@"1" range:nodeAttributedStringRange];
+        }
+        
+        // Subscript tag
+        else if (strncmp("sub", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            [nodeAttributedString addAttribute:(NSString*)kCTSuperscriptAttributeName value:@"-1" range:nodeAttributedStringRange];
+        }
+
+
+        // Code/Samp tags
+        if (strncmp("code", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+            strncmp("samp", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+            if (fixedFont) {
+                UIColor *backgroundColorRef = [UIColor colorWithRed:236.0f/255.0f green:222.0f/255.0f blue:180.0f/255.0f alpha:1.0f];
+                [nodeAttributedString addAttribute:NSFontAttributeName value:fixedFont range:nodeAttributedStringRange];
+                [nodeAttributedString addAttribute:NSBackgroundColorAttributeName value:backgroundColorRef range:nodeAttributedStringRange];
+            }
+        }
+
         // Bold Tag
         if (strncmp("b", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
             strncmp("strong", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
@@ -146,7 +208,9 @@
         }
         
         // Stike Tag
-        else if (strncmp("strike", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+        else if (strncmp("strike", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+                 strncmp("del", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+                   strncmp("s", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             [nodeAttributedString addAttribute:NSStrikethroughStyleAttributeName value:@(YES) range:nodeAttributedStringRange];
         }
         
